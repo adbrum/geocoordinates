@@ -1,0 +1,11 @@
+.DS_Store
+.env
+.idea
+.geo
+*.sqlite3
+*.pyc
+__pycache__
+staticfiles
+.ipynb_checkpoints/
+
+
