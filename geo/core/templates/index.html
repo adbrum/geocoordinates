@@ -3,50 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Registro</title>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+    </style>
+
 </head>
 <body>
-    <h1>Registro Coordenadas!</h1>
-    <form method="post" action=".">
-        {% csrf_token %}
-          {{ form.as_p }}
+<h1>Registro Coordenadas!</h1>
 
-          <div>
-              <button type="submit">Entrar</button>
-          </div>
+<form method="post" action=".">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <div>
+        <button type="submit">Entrar</button>
+    </div>
 </form>
 
- <div class="container">
-        <div class="row">
-            <div class="box">
-                <div class="col-lg-12">
-                    <hr>
-                    <h2 class="intro-text text-center">Contact
-{#                        <strong>business casual</strong>#}
-                    </h2>
-                    <hr>
-                </div>
-                <div class="col-md-8">
-                    <!-- Embedded Google Map using an iframe - to select your location find it on Google maps and paste the link as the iframe src. If you want to use the Google Maps API instead then have at it! -->
-                    <iframe width="100%" height="800" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-                            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d100647.00562381679!2d-7.9703494!3d37.9720199!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1a7486c2d1c34b%3A0x9f8eafd235bb868b!2sRestaurante+Adega+T%C3%ADpica+25+De+Abril!5e0!3m2!1spt-PT!2spt!4v1455130139603" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+<div id="map"></div>
+<script>
 
-                </div>
-                <div class="col-md-4">
-                    <p>Phone:
-                        <strong>+351 284325960</strong>
-                    </p>
-                    <p>Email:
-                        <strong><a href="mailto:name@example.com">adega25abril@gmail.com</a></strong>
-                    </p>
-                    <p>Address:
-                        <strong>Rua da Moeda nº 23
-                            <br>Portugal, Beja 7800-464</strong>
-                    </p>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-    </div>
+    function initMap() {
+        var myLatLng = {lat: {{ latitude }}, lng: {{ longitude }}};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            title: 'Hello World!'
+        });
+    }
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBk-RyCCncIoSc4VoynqK5OsSnZj0h82SY&signed_in=true&callback=initMap">
+</script>
+
 </body>
 </html>
 

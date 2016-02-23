@@ -15,12 +15,14 @@ def geoCoordenada(request):
         longitude = request.POST['longitude']
         latitude = request.POST['latitude']
 
-        address = numero +' '+ endereco +', '+ cidade +', '+ estado
+        address = numero + ' ' + endereco + ', ' + cidade + ', ' + estado
 
         # address = "1600 Amphitheatre Parkway, Mountain View, CA"
         api_key = "AIzaSyBWKWlI1WE9nvuld9AVcpTZQItHLTUmWxo"
-        api_response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
+        api_response = requests.get(
+            'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
         api_response_dict = api_response.json()
+        print('VVVVVVVVVVVV: ', api_response_dict)
 
         if api_response_dict['status'] == 'OK':
             latitude = api_response_dict['results'][0]['geometry']['location']['lat']
@@ -29,7 +31,12 @@ def geoCoordenada(request):
             print('Longitude:', longitude)
 
         return render(request, 'index.html',
-                      {'form': CoordenadaForm()})
+                      {
+                          'latitude': latitude,
+                          'longitude': longitude,
+                          'form': CoordenadaForm()}
+                      )
     else:
+        print('EEEEEEEEEEEEEEEEEEEEEEEEEEEE')
         return render(request, 'index.html',
-                      {'form': form()})
+                      {'form': CoordenadaForm()})
