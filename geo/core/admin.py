@@ -1,3 +1,5 @@
 from django.contrib import admin
+from geo.core.models import Pessoa, Coordenada
 
-# Register your models here.
+admin.site.register(Pessoa)
+admin.site.register(Coordenada)

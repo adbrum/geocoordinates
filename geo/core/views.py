@@ -1,19 +1,21 @@
-from django.shortcuts import render
 import requests
+from django.shortcuts import render
 from geo.core.forms import CoordenadaForm
+from geo.core.models import Pessoa, Coordenada
 
 
 def geoCoordenada(request):
     if request.method == 'POST':
         form = CoordenadaForm(request.POST)
-        print('XXXXX: ', request.POST)
 
+        nome = request.POST['nome']
+        sobrenome = request.POST['sobrenome']
         endereco = request.POST['endereco']
         cidade = request.POST['cidade']
         numero = request.POST['numero']
         estado = request.POST['estado']
-        longitude = request.POST['longitude']
-        latitude = request.POST['latitude']
+        # longitude = request.POST['longitude']
+        # latitude = request.POST['latitude']
 
         address = numero + ' ' + endereco + ', ' + cidade + ', ' + estado
 
@@ -22,7 +24,6 @@ def geoCoordenada(request):
         api_response = requests.get(
             'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
         api_response_dict = api_response.json()
-        print('VVVVVVVVVVVV: ', api_response_dict)
 
         if api_response_dict['status'] == 'OK':
             latitude = api_response_dict['results'][0]['geometry']['location']['lat']
@@ -30,13 +31,28 @@ def geoCoordenada(request):
             print('Latitude:', latitude)
             print('Longitude:', longitude)
 
-        return render(request, 'index.html',
-                      {
-                          'latitude': latitude,
-                          'longitude': longitude,
-                          'form': CoordenadaForm()}
-                      )
+            # cria uma pessoa
+            pessoa = Pessoa.objects.create(nome=nome,
+                                           sobrenome=sobrenome)
+
+            Coordenada.objects.create(possoa_id=pessoa.pk,  # insere o pk do pessoa.
+                                      endereco=endereco,
+                                      cidade=cidade,
+                                      numero=numero,
+                                      estado=estado,
+                                      longitude=longitude,
+                                      latitude=latitude
+                                      )
+
+            return render(request, 'index.html',
+                          {
+                              'latitude': latitude,
+                              'longitude': longitude,
+                              'form': CoordenadaForm(),
+                          })
+        else:
+            return render(request, 'index.html',
+                          {'form': form})
     else:
-        print('EEEEEEEEEEEEEEEEEEEEEEEEEEEE')
         return render(request, 'index.html',
                       {'form': CoordenadaForm()})
