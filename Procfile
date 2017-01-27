@@ -1,1 +1,1 @@
-web: gunicorn geopostos.wsgi --log-file -
+web: gunicorn geo.wsgi --log-file -
