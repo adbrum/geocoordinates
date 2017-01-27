@@ -1,1 +1,1 @@
-web: gunicorn eventex.wsgi --log-file -
+web: gunicorn geopostos.wsgi --log-file -
