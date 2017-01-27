@@ -79,9 +79,12 @@ WSGI_APPLICATION = 'geo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+defaut_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+
 DATABASES = {
     'default': config('DATABASE_URL', default=defaut_dburl, cast=dburl),
 }
+
 
 # DATABASES = {
 #     'default': {
